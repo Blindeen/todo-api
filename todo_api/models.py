@@ -12,3 +12,16 @@ class UserData(AbstractUser):
 
     def __str__(self):
         return self.name
+
+
+class List(models.Model):
+    header = models.CharField(max_length=20)
+
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+
+
+class Task(models.Model):
+    description = models.CharField()
+    is_done = models.BooleanField(default=False)
+
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
