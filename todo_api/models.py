@@ -21,7 +21,7 @@ class List(models.Model):
 
 
 class Task(models.Model):
-    description = models.CharField()
+    description = models.CharField(max_length=100)
     is_done = models.BooleanField(default=False)
 
     list = models.ForeignKey(List, on_delete=models.CASCADE)
