@@ -2,9 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class UserData(AbstractUser):
+    NAME_MAX_LEN = 100
+    EMAIL_MAX_LEN = 100
+
     username = None
-    name = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
+    name = models.CharField(max_length=NAME_MAX_LEN, unique=True)
+    email = models.EmailField(max_length=EMAIL_MAX_LEN, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
@@ -12,3 +15,31 @@ class UserData(AbstractUser):
 
     def __str__(self):
         return self.name
+
+
+class List(models.Model):
+    HEADER_MAX_LEN = 20
+
+    header = models.CharField(max_length=HEADER_MAX_LEN, default="")
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+
+    def set_header(self, text):
+        self.header = text
+        self.save()
+
+
+class Task(models.Model):
+    DESCRIPITON_MAX_LEN = 100
+
+    description = models.CharField(max_length=DESCRIPITON_MAX_LEN)
+    is_done = models.BooleanField(default=False)
+
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+
+    def set_description(self, text):
+        self.description = text
+        self.save()
+
+    def set_is_done(self, value):
+        self.is_done = value
+        self.save()
