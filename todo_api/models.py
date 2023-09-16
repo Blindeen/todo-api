@@ -20,8 +20,12 @@ class UserData(AbstractUser):
 class List(models.Model):
     HEADER_MAX_LEN = 20
 
-    header = models.CharField(max_length=HEADER_MAX_LEN)
+    header = models.CharField(max_length=HEADER_MAX_LEN, default="")
     user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+
+    def set_header(self, text):
+        self.header = text
+        self.save()
 
 
 class Task(models.Model):
@@ -31,3 +35,11 @@ class Task(models.Model):
     is_done = models.BooleanField(default=False)
 
     list = models.ForeignKey(List, on_delete=models.CASCADE)
+
+    def set_description(self, text):
+        self.description = text
+        self.save()
+
+    def set_is_done(self, value):
+        self.is_done = value
+        self.save()
