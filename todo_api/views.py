@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from todo_api import serializers, models
+from todo_api import serializers, models, services
 
 class RegisterView(APIView):
     permission_classes = []
@@ -61,17 +61,13 @@ class LoginView(APIView):
 
 class CreateListView(APIView):
     def post(self, request):
-        user = request.user
-        new_list = models.List.objects.create(user=user)
-        return Response({"id": new_list.id}, status=status.HTTP_201_CREATED)
+        new_list_id = services.ListService.create_list(request.user)
+        return Response({"id": new_list_id}, status=status.HTTP_201_CREATED)
 
 
 class DeleteListView(APIView):
     def delete(self, request, id):
-        user = request.user
-        list_set = models.List.objects.filter(id=id, user=user)
-        if not list_set:
+        is_deleted = services.ListService.delete_list(id, request.user)
+        if not is_deleted:
             return Response({"error": ["List not found"]}, status=status.HTTP_404_NOT_FOUND)
-
-        list_set.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
