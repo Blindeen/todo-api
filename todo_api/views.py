@@ -43,3 +43,9 @@ class SetListHeaderView(APIView):
     def patch(self, request):
         services.ListService.set_header(request.user, request.data)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class FetchListsView(APIView):
+    def get(self, request):
+        response_data = services.ListService.get_lists(request.user)
+        return Response({"data": response_data}, status=status.HTTP_200_OK)

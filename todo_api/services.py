@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from todo_api import models, exceptions
+from todo_api import models, exceptions, serializers
 
 
 class LoginRegisterService:
@@ -74,3 +74,9 @@ class ListService:
         except models.List.DoesNotExist:
             raise exceptions.ListNotFoundException
         list.set_header(header_text)
+
+    @staticmethod
+    def get_lists(user):
+        list_query_set = models.List.objects.filter(user=user)
+        serializer = serializers.ListSerializer(list_query_set, many=True)
+        return serializer.data
