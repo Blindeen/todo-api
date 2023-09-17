@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from todo_api import serializers, models, services, exceptions
+from todo_api import serializers, services
 
 
 class RegisterView(APIView):
