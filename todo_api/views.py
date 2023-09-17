@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from todo_api import serializers, models, services
+from todo_api import serializers, models, services, exceptions
+
 
 class RegisterView(APIView):
     permission_classes = []
@@ -41,14 +42,10 @@ class LoginView(APIView):
         try:
             user = models.UserData.objects.get(email=email)
         except models.UserData.DoesNotExist:
-            return Response({
-                "error": ["Incorrect email"]
-            }, status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.IncorrectEmailException
 
         if not user.check_password(password):
-            return Response({
-                "error": ["Incorrect password"]
-            }, status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.IncorrectPasswordException
 
         refresh = RefreshToken.for_user(user)
         data = {
@@ -67,7 +64,5 @@ class CreateListView(APIView):
 
 class DeleteListView(APIView):
     def delete(self, request, id):
-        is_deleted = services.ListService.delete_list(id, request.user)
-        if not is_deleted:
-            return Response({"error": ["List not found"]}, status=status.HTTP_404_NOT_FOUND)
+        services.ListService.delete_list(id, request.user)
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,4 +1,5 @@
-from todo_api import models
+from todo_api import models, exceptions
+
 
 class ListService:
     @staticmethod
@@ -8,9 +9,8 @@ class ListService:
 
     @staticmethod
     def delete_list(id, user):
-        list_set = models.List.objects.filter(id=id, user=user)
-        if not list_set:
-            return False
-
-        list_set.delete()
-        return True
+        try:
+            list = models.List.objects.get(id=id, user=user)
+        except models.List.DoesNotExist:
+            raise exceptions.ListNotFoundException
+        list.delete()
