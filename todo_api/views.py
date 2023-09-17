@@ -67,13 +67,9 @@ class CreateListView(APIView):
 
 
 class DeleteListView(APIView):
-    def delete(self, request):
+    def delete(self, request, id):
         user = request.user
-        list_id = request.data.get("id", None)
-        if not list_id:
-            return Response({"error": ["Missing list id"]}, status=status.HTTP_400_BAD_REQUEST)
-
-        list_set = models.List.objects.filter(id=list_id, user=user)
+        list_set = models.List.objects.filter(id=id, user=user)
         if not list_set:
             return Response({"error": ["List not found"]}, status=status.HTTP_404_NOT_FOUND)
 
