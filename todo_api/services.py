@@ -58,3 +58,19 @@ class ListService:
         except models.List.DoesNotExist:
             raise exceptions.ListNotFoundException
         list.delete()
+
+    @staticmethod
+    def set_header(user, data):
+        list_id = data.get("id", None)
+        if not list_id:
+            raise exceptions.MissingListIdException
+
+        header_text = data.get("header", None)
+        if not header_text:
+            raise exceptions.MissingHeaderException
+
+        try:
+            list = models.List.objects.get(id=list_id, user=user)
+        except models.List.DoesNotExist:
+            raise exceptions.ListNotFoundException
+        list.set_header(header_text)

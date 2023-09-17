@@ -37,3 +37,9 @@ class DeleteListView(APIView):
     def delete(self, request, id):
         services.ListService.delete_list(id, request.user)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SetListHeaderView(APIView):
+    def patch(self, request):
+        services.ListService.set_header(request.user, request.data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
