@@ -5,3 +5,4 @@ sqlparse~=0.4.4
 setuptools~=65.5.0
 djangorestframework
 djangorestframework-simplejwt
+django-cors-headers
