@@ -1,5 +1,6 @@
 from rest_framework.exceptions import APIException
 
+
 class IncorrectEmailException(APIException):
     status_code = 400
     default_detail = {"Credentials": ["Incorrect email."]}
@@ -8,6 +9,11 @@ class IncorrectEmailException(APIException):
 class IncorrectPasswordException(APIException):
     status_code = 400
     default_detail = {"Credentials": ["Incorrect password."]}
+
+
+class UserAlreadyExistsException(APIException):
+    status_code = 400
+    default_detail = {"Credentials": ["User with such an email already exists."]}
 
 
 class ListNotFoundException(APIException):
