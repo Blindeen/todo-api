@@ -4,7 +4,6 @@ from todo_api import models
 
 
 class RegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=20)
     name = serializers.CharField(max_length=20)
     email = serializers.EmailField(max_length=100)
     password = serializers.CharField(min_length=8, max_length=100)

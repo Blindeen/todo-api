@@ -6,12 +6,19 @@ from todo_api import models, exceptions, serializers
 class LoginRegisterService:
     @staticmethod
     def register_user(data):
-        user = models.UserData.objects.create(
-            name=data["name"],
-            email=data["email"],
-        )
+        name = data["name"]
+        email = data["email"]
+        password = data["password"]
 
-        user.set_password(data["password"])
+        user_set = models.UserData.objects.filter(email=email)
+        if user_set:
+            raise exceptions.UserAlreadyExistsException
+
+        user = models.UserData.objects.create(
+            name=name,
+            email=email,
+        )
+        user.set_password(password)
         user.save()
 
         refresh = RefreshToken.for_user(user)
