@@ -23,7 +23,7 @@ class LoginRegisterService:
 
         refresh = RefreshToken.for_user(user)
         response_data = {
-            "token": str(refresh.access_token),
+            "token": " ".join(["Bearer", str(refresh.access_token)]),
             "name": user.name,
             "email": user.email,
         }
@@ -44,7 +44,7 @@ class LoginRegisterService:
 
         refresh = RefreshToken.for_user(user)
         response_data = {
-            "token": str(refresh.access_token),
+            "token": " ".join(["Bearer", str(refresh.access_token)]),
             "name": user.name,
             "email": user.email,
         }
